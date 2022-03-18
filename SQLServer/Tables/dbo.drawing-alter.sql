@@ -2,78 +2,32 @@ USE Lottery;
 GO
 
 --Primary Key [ID]
-ALTER TABLE dbo.drawings DROP CONSTRAINT IF EXISTS pk_drawings;
+ALTER TABLE dbo.drawing DROP CONSTRAINT IF EXISTS pk_drawing
 GO
 
-ALTER TABLE dbo.drawings 
-  ADD CONSTRAINT pk_drawings 
+ALTER TABLE dbo.drawing
+  ADD CONSTRAINT pk_drawing
   PRIMARY KEY CLUSTERED (id);
 GO
 
---Unique [gameID,gameDate]
-ALTER TABLE dbo.drawings DROP CONSTRAINT IF EXISTS unq_drawings_gameId_gameDate;
+--Foreign Key [drawingID]
+ALTER TABLE dbo.drawing DROP CONSTRAINT IF EXISTS fk_drawing_drawingID;
 GO
 
-ALTER TABLE dbo.drawings
-  ADD CONSTRAINT unq_drawings_gameID_gameDate
-  UNIQUE (gameID,[gameDate]);
-GO
-
---Foreign Key [gameID]
-ALTER TABLE dbo.drawings DROP CONSTRAINT IF EXISTS fk_drawings_gameID;
-GO
-
-ALTER TABLE dbo.drawings
-  ADD CONSTRAINT fk_drawings_gameID
-  FOREIGN KEY (gameID) REFERENCES dbo.games(id);
+ALTER TABLE dbo.drawing
+ADD CONSTRAINT fk_drawing_drawingID
+FOREIGN KEY (drawingID)
+REFERENCES dbo.drawingInfo(id)
+ON DELETE CASCADE
+ON UPDATE CASCADE;
 GO
 
 --Default on [isActive]
-ALTER TABLE dbo.drawings DROP CONSTRAINT IF EXISTS dv_drawings_isActive;
+ALTER TABLE dbo.drawing DROP CONSTRAINT IF EXISTS dv_drawing_isActive;
 GO
 
-ALTER TABLE dbo.drawings 
-ADD CONSTRAINT dv_drawings_isActive
+ALTER TABLE dbo.drawing
+ADD CONSTRAINT dv_drawing_isActive
   DEFAULT 1
   FOR isActive;
-GO
-
---Default on [dateCreated]
-ALTER TABLE dbo.drawings DROP CONSTRAINT IF EXISTS dv_drawings_dateCreated;
-GO
-
-ALTER TABLE dbo.drawings
-ADD CONSTRAINT dv_drawings_dateCreated
-  DEFAULT SYSDATETIME() 
-  FOR dateCreated;
-GO
-
---Default on [dateModified]
-ALTER TABLE dbo.drawings DROP CONSTRAINT IF EXISTS dv_drawings_dateModified;
-GO
-
-ALTER TABLE dbo.drawings
-ADD CONSTRAINT dv_drawings_dateModified
-  DEFAULT SYSDATETIME()
-  FOR dateModified;
-GO
-
---Default on [createdBy]
-ALTER TABLE dbo.drawings DROP CONSTRAINT IF EXISTS dv_drawings_createdBy;
-GO
-
-ALTER TABLE dbo.drawings
-ADD CONSTRAINT dv_drawings_createdBy
-  DEFAULT SUSER_SNAME()
-  FOR createdBy;
-GO
-
---Default on [modifiedBy]
-ALTER TABLE dbo.drawings DROP CONSTRAINT IF EXISTS dv_drawings_modifiedBy;
-GO
-
-ALTER TABLE dbo.drawings
-ADD CONSTRAINT dv_drawings_modifiedBy
-  DEFAULT SUSER_SNAME()
-  FOR modifiedBy;
 GO
