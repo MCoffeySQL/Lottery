@@ -12,12 +12,20 @@ SELECT
   gatherCount.gameName,
   gatherCount.gameDate,
   gatherCount.positions,
-  CASE
-    WHEN gatherCount.positions = gatherCount.cPositions
-    THEN 1
-    ELSE 0
-  END AS isValid,
-  [1],[2],[3],[4],[5],[6],[7],[8],[9],[10],[11],[12],[100],[101]
+  [1] AS position1,
+  [2] AS position2,
+  [3] AS position3,
+  [4] AS position4,
+  [5] AS position5,
+  [6] AS position6,
+  [7] AS position7,
+  [8] AS position8,
+  [9] AS position9,
+  [10] AS position10,
+  [11] AS position11,
+  [12] AS position12,
+  [100] AS position100,
+  [101] AS position101
 FROM(
   SELECT 
     drawingID,
