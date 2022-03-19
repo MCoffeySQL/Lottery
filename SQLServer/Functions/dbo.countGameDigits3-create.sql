@@ -17,6 +17,18 @@ CREATE OR ALTER FUNCTION dbo.countGameDigits3(
 RETURNS TABLE
 AS
 RETURN
+WITH cDrawing                                                   --cte to gather gameDate,gameID from drawingInfo
+AS (                                                            --to postion, digit in drawing
+  SELECT                                                        --and ignore positions < 100
+    drawingInfo.gameDate,
+    drawingInfo.gameID,
+    drawing.position,
+    drawing.digit
+  FROM dbo.drawingInfo
+  INNER JOIN dbo.drawing
+    ON drawingInfo.id = drawing.drawingID
+  WHERE position < 100
+)
 SELECT                                                          --display digits and apply aggregates
   gather3.digit1,
   gather3.digit2,
@@ -32,9 +44,9 @@ FROM (                                                          --gather raw res
     pass1.digit AS digit1,
     pass2.digit AS digit2,
     pass3.digit AS digit3
-  FROM dbo.drawingsXT AS pass1
-  CROSS APPLY dbo.drawingsXT AS pass2                           --join to self to produce results
-  CROSS APPLY dbo.drawingsXT AS pass3                           --join to self again to produce results
+  FROM cDrawing AS pass1
+  CROSS APPLY cDrawing AS pass2                           --join to self to produce results
+  CROSS APPLY cDrawing AS pass3                           --join to self again to produce results
   WHERE pass1.gameDate = pass2.gameDate
     AND pass1.gameDate = pass3.gameDate
     AND pass1.position < pass2.position                         --disallow duplication of A A
