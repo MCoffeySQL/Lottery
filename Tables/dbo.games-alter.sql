@@ -22,6 +22,16 @@ ADD CONSTRAINT dv_games_isActive
   FOR isActive;
 GO
 
+--Unique on [name]
+ALTER TABLE dbo.games
+  DROP CONSTRAINT IF EXISTS unq_games_name;
+GO
+
+ALTER TABLE dbo.games
+  ADD CONSTRAINT unq_games_name
+  UNIQUE([name]);
+GO
+
 --Default on [dateCreated]
 ALTER TABLE dbo.games
   DROP CONSTRAINT IF EXISTS dv_games_dateCreated;

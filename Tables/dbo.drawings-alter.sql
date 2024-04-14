@@ -3,7 +3,7 @@ GO
 
 --Primary Key [ID]
 ALTER TABLE dbo.drawings
-  DROP CONSTRAINT IF EXISTS pk_drawings_days;
+  DROP CONSTRAINT IF EXISTS pk_drawings;
 GO
 
 ALTER TABLE dbo.drawings

@@ -11,23 +11,13 @@ ALTER TABLE dbo.game_states
   PRIMARY KEY CLUSTERED (id);
 GO
 
---//--Foreign Key [gameID]
+--Unique on [gameID][state]
 ALTER TABLE dbo.game_states
-  DROP CONSTRAINT IF EXISTS fk_game_states#gameID;
+  DROP CONSTRAINT IF EXISTS unq_game_states$gameID$state;
 
 ALTER TABLE dbo.game_states
-  ADD CONSTRAINT fk_game_states#gameID
-  FOREIGN KEY (gameID)
-  REFERENCES dbo.games(id)
-  ON DELETE CASCADE
-  ON UPDATE NO ACTION;
-GO
-
---//-- Nonclustered on gameID
-DROP INDEX IF EXISTS nc_game_states#state ON dbo.game_States;
-
-CREATE NONCLUSTERED INDEX game_states#state
-  ON dbo.game_states([state]);
+  ADD CONSTRAINT unq_game_states$gameID$state
+  UNIQUE ([gameID],[state]);
 GO
 
 --Default on [isActive]
